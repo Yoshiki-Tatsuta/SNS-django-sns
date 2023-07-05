@@ -1,0 +1,23 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class SnsPost(models.Model):
+    """"投稿内容登録するのに使用"""
+    content = models.TextField()
+    image = models.ImageField(upload_to="snspost_images", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"SnsPost {self.id} - {self.content}"
+    
+    @property
+    def username(self):
+        return self.user.username
+
+
+class UserProfile(models.Model):
+    """ユーザの詳細情報を登録するのに使用"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
