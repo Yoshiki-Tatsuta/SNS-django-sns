@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+import os
 
 
 class SnsPost(models.Model):
@@ -15,6 +17,17 @@ class SnsPost(models.Model):
     @property
     def username(self):
         return self.user.username
+    
+    def delete(self, *args, **kwargs):
+        # 画像の削除処理
+        if self.image:
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, str(self.image)))
+            except FileNotFoundError:
+                pass  # 画像ファイルが存在しない場合は無視する
+        
+        # 元のモデルの削除処理を実行
+        super().delete(*args, **kwargs)
 
 
 class UserProfile(models.Model):
