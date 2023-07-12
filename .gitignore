@@ -3,3 +3,4 @@ env/
 __pycache__/
 *.log
 local_settings.py
+user.txt
